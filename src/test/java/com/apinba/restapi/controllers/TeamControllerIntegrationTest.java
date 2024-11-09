@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.is;
 
 import com.apinba.restapi.AbstractIntegrationTest;
 import com.apinba.restapi.controllers.model.CreateTeamRequest;
+import com.apinba.restapi.controllers.model.CreateTeamResponse;
 import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.repositories.ITeamRepository;
 import io.restassured.response.Response;
@@ -134,11 +135,11 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
   @Nested
   class GivenPersistedTeamsShould {
 
-    private TeamModel persistedTeam;
+    private CreateTeamResponse persistedTeam;
 
     @BeforeEach
     void setUp() {
-      persistedTeam = create(aCreateTeamRequest()).thenReturn().body().as(TeamModel.class);
+      persistedTeam = create(aCreateTeamRequest()).thenReturn().body().as(CreateTeamResponse.class);
     }
 
     @Test
@@ -153,74 +154,74 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void returnsIdWhenFindAll() {
-      findAll().then().body("[0].id", is(persistedTeam.getId().toString()));
+      findAll().then().body("[0].id", is(persistedTeam.id().toString()));
     }
 
     @Test
     void returnsTeamNameWhenFindAll() {
-      findAll().then().body("[0].name", is(persistedTeam.getName()));
+      findAll().then().body("[0].name", is(persistedTeam.name()));
     }
 
     @Test
     void returnsTeamFullNameWhenFindAll() {
-      findAll().then().body("[0].full_name", is(persistedTeam.getFull_name()));
+      findAll().then().body("[0].full_name", is(persistedTeam.fullName()));
     }
 
     @Test
     void returnsTeamAbbreviationWhenFindAll() {
-      findAll().then().body("[0].abbreviation", is(persistedTeam.getAbbreviation()));
+      findAll().then().body("[0].abbreviation", is(persistedTeam.abbreviation()));
     }
 
     @Test
     void returnsTeamConferenceWhenFindAll() {
-      findAll().then().body("[0].conference", is(persistedTeam.getConference()));
+      findAll().then().body("[0].conference", is(persistedTeam.conference()));
     }
 
     @Test
     void returnsTeamDivisionWhenFindAll() {
-      findAll().then().body("[0].division", is(persistedTeam.getDivision()));
+      findAll().then().body("[0].division", is(persistedTeam.division()));
     }
 
     @Test
     void returnOkWhenFindById() {
-      findById(persistedTeam.getId()).then().statusCode(SC_OK);
+      findById(persistedTeam.id()).then().statusCode(SC_OK);
     }
 
     @Test
     void returnsIdWhenFindById() {
-      findById(persistedTeam.getId()).then().body("id", is(persistedTeam.getId().toString()));
+      findById(persistedTeam.id()).then().body("id", is(persistedTeam.id().toString()));
     }
 
     @Test
     void returnsTeamNameWhenFindById() {
-      findById(persistedTeam.getId()).then().body("name", is(persistedTeam.getName()));
+      findById(persistedTeam.id()).then().body("name", is(persistedTeam.name()));
     }
 
     @Test
     void returnsTeamFullNameWhenFindById() {
-      findById(persistedTeam.getId()).then().body("full_name", is(persistedTeam.getFull_name()));
+      findById(persistedTeam.id()).then().body("full_name", is(persistedTeam.fullName()));
     }
 
     @Test
     void returnsTeamAbbreviationWhenFindById() {
-      findById(persistedTeam.getId())
+      findById(persistedTeam.id())
           .then()
-          .body("abbreviation", is(persistedTeam.getAbbreviation()));
+          .body("abbreviation", is(persistedTeam.abbreviation()));
     }
 
     @Test
     void returnsTeamConferenceWhenFindById() {
-      findById(persistedTeam.getId()).then().body("conference", is(persistedTeam.getConference()));
+      findById(persistedTeam.id()).then().body("conference", is(persistedTeam.conference()));
     }
 
     @Test
     void returnsTeamDivisionWhenFindById() {
-      findById(persistedTeam.getId()).then().body("division", is(persistedTeam.getDivision()));
+      findById(persistedTeam.id()).then().body("division", is(persistedTeam.division()));
     }
 
     @Test
     void returnOkWhenUpdate() {
-      update(aValidTeam(), persistedTeam.getId()).then().statusCode(SC_OK);
+      update(aValidTeam(), persistedTeam.id()).then().statusCode(SC_OK);
     }
 
     @Test
@@ -228,7 +229,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
       var team = aValidTeam();
       team.setName("Bulls");
 
-      update(team, persistedTeam.getId()).then().body("name", is(team.getName()));
+      update(team, persistedTeam.id()).then().body("name", is(team.getName()));
     }
 
     @Test
@@ -236,7 +237,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
       var team = aValidTeam();
       team.setFull_name("Chicago Bulls");
 
-      update(team, persistedTeam.getId()).then().body("full_name", is(team.getFull_name()));
+      update(team, persistedTeam.id()).then().body("full_name", is(team.getFull_name()));
     }
 
     @Test
@@ -244,7 +245,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
       var team = aValidTeam();
       team.setAbbreviation("CHI");
 
-      update(team, persistedTeam.getId()).then().body("abbreviation", is(team.getAbbreviation()));
+      update(team, persistedTeam.id()).then().body("abbreviation", is(team.getAbbreviation()));
     }
 
     @Test
@@ -252,7 +253,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
       var team = aValidTeam();
       team.setConference("West");
 
-      update(team, persistedTeam.getId()).then().body("conference", is(team.getConference()));
+      update(team, persistedTeam.id()).then().body("conference", is(team.getConference()));
     }
 
     @Test
@@ -260,7 +261,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
       var team = aValidTeam();
       team.setDivision("Central");
 
-      update(team, persistedTeam.getId()).then().body("division", is(team.getDivision()));
+      update(team, persistedTeam.id()).then().body("division", is(team.getDivision()));
     }
 
     @Test
@@ -268,9 +269,9 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
       var team = aValidTeam();
       team.setName("Bulls");
 
-      update(team, persistedTeam.getId());
+      update(team, persistedTeam.id());
 
-      assertThat(teamRepository.findById(persistedTeam.getId()))
+      assertThat(teamRepository.findById(persistedTeam.id()))
           .get()
           .extracting(TeamModel::getName)
           .isEqualTo("Bulls");
@@ -281,9 +282,9 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
       var team = aValidTeam();
       team.setFull_name("Chicago Bulls");
 
-      update(team, persistedTeam.getId());
+      update(team, persistedTeam.id());
 
-      assertThat(teamRepository.findById(persistedTeam.getId()))
+      assertThat(teamRepository.findById(persistedTeam.id()))
           .get()
           .extracting(TeamModel::getFull_name)
           .isEqualTo("Chicago Bulls");
@@ -294,8 +295,8 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
       var team = aValidTeam();
       team.setAbbreviation("CHI");
 
-      update(team, persistedTeam.getId());
-      assertThat(teamRepository.findById(persistedTeam.getId()))
+      update(team, persistedTeam.id());
+      assertThat(teamRepository.findById(persistedTeam.id()))
           .get()
           .extracting(TeamModel::getAbbreviation)
           .isEqualTo("CHI");
@@ -306,9 +307,9 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
       var team = aValidTeam();
       team.setConference("West");
 
-      update(team, persistedTeam.getId());
+      update(team, persistedTeam.id());
 
-      assertThat(teamRepository.findById(persistedTeam.getId()))
+      assertThat(teamRepository.findById(persistedTeam.id()))
           .get()
           .extracting(TeamModel::getConference)
           .isEqualTo("West");
@@ -319,9 +320,9 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
       var team = aValidTeam();
       team.setDivision("Central");
 
-      update(team, persistedTeam.getId());
+      update(team, persistedTeam.id());
 
-      assertThat(teamRepository.findById(persistedTeam.getId()))
+      assertThat(teamRepository.findById(persistedTeam.id()))
           .get()
           .extracting(TeamModel::getDivision)
           .isEqualTo("Central");
@@ -329,14 +330,14 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void returnOkWhenDeleteById() {
-      delete(persistedTeam.getId()).then().statusCode(SC_OK);
+      delete(persistedTeam.id()).then().statusCode(SC_OK);
     }
 
     @Test
     void deleteTeamFromDatabase() {
-      delete(persistedTeam.getId());
+      delete(persistedTeam.id());
 
-      assertThat(teamRepository.findById(persistedTeam.getId())).isEmpty();
+      assertThat(teamRepository.findById(persistedTeam.id())).isEmpty();
     }
   }
 

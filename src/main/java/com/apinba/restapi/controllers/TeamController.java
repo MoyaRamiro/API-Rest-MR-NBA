@@ -1,6 +1,7 @@
 package com.apinba.restapi.controllers;
 
 import com.apinba.restapi.controllers.model.CreateTeamRequest;
+import com.apinba.restapi.controllers.model.CreateTeamResponse;
 import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.services.TeamService;
 import java.util.List;
@@ -32,8 +33,9 @@ public class TeamController {
   }
 
   @PostMapping
-  public TeamModel saveTeam(@RequestBody CreateTeamRequest requestBody) {
-    return this.teamService.createTeam(requestBody.toCreateTeam());
+  public ResponseEntity<CreateTeamResponse> saveTeam(@RequestBody CreateTeamRequest requestBody) {
+    var createdTeam = teamService.createTeam(requestBody.toCreateTeam());
+    return ResponseEntity.ok(CreateTeamResponse.fromTeamModel(createdTeam));
   }
 
   @GetMapping(path = "/{id}")
