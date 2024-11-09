@@ -5,13 +5,17 @@ import com.apinba.restapi.repositories.ITeamRepository;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class TeamService {
-  @Autowired ITeamRepository teamRepository;
+
+  private final ITeamRepository teamRepository;
+
+  public TeamService(ITeamRepository teamRepository) {
+    this.teamRepository = teamRepository;
+  }
 
   public ArrayList<TeamModel> getTeams() {
     return (ArrayList<TeamModel>) teamRepository.findAll();

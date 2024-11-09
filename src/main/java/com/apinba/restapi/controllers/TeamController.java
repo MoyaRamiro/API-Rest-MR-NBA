@@ -2,18 +2,21 @@ package com.apinba.restapi.controllers;
 
 import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.services.TeamService;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/teams")
 public class TeamController {
-  @Autowired private TeamService teamService;
+
+  private final TeamService teamService;
+
+  public TeamController(TeamService teamService) {
+    this.teamService = teamService;
+  }
 
   @GetMapping
   public ArrayList<TeamModel> getTeams() {
