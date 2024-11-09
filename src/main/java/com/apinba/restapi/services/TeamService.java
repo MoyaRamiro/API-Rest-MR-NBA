@@ -1,55 +1,60 @@
 package com.apinba.restapi.services;
 
-import com.apinba.restapi.models.TeamModel;
-import com.apinba.restapi.repositories.ITeamRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.apinba.restapi.exceptions.TeamNotFoundException;
+import com.apinba.restapi.models.CreateTeam;
+import com.apinba.restapi.models.Team;
+import com.apinba.restapi.models.UpdateTeam;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
+
+import com.apinba.restapi.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.swing.text.html.Option;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.UUID;
-
 @Service
 public class TeamService {
-    @Autowired
-    ITeamRepository teamRepository;
 
-    public ArrayList<TeamModel> getTeams() {
-        return (ArrayList<TeamModel>) teamRepository.findAll();
+  private final TeamRepository teamRepository;
+
+  public TeamService(TeamRepository teamRepository) {
+    this.teamRepository = teamRepository;
+  }
+
+  public Stream<Team> getTeams() {
+    return teamRepository.findAll();
+  }
+
+  public Team createTeam(CreateTeam createTeam) {
+    var team = new Team(
+            UUID.randomUUID(),
+            createTeam.abbreviation(),
+            createTeam.city(),
+            createTeam.conference(),
+            createTeam.division(),
+            createTeam.fullName(),
+            createTeam.name());
+    return teamRepository.save(team);
+  }
+
+  public Optional<Team> getById(UUID id) {
+    return teamRepository.findById(id);
+  }
+
+  public Team updateById(UpdateTeam updateTeam, @RequestParam UUID id) {
+    var team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException(id));
+    var updatedTeam = team.updateWith(updateTeam);
+    teamRepository.save(updatedTeam);
+    return updatedTeam;
+  }
+
+  public void deleteTeamById(UUID id) {
+    if (!teamRepository.existsById(id)) {
+      throw new TeamNotFoundException(id);
     }
 
-    public TeamModel saveTeam(TeamModel team){
-        return teamRepository.save(team);
-    }
-
-    public Optional<TeamModel> getById(UUID id){
-        return teamRepository.findById(id);
-    }
-
-    public TeamModel updateById(TeamModel team, @RequestParam UUID id){
-        TeamModel teamModel = teamRepository.findById(id).get();
-
-        teamModel.setName(team.getName());
-        teamModel.setCity(team.getCity());
-        teamModel.setAbbreviation(team.getAbbreviation());
-        teamModel.setConference(team.getConference());
-        teamModel.setDivision(team.getDivision());
-        teamModel.setFull_name(team.getFull_name());
-
-        teamRepository.save(teamModel);
-
-        return teamModel;
-    }
-
-    public Boolean deleteTeamById(UUID id){
-        try {
-            teamRepository.deleteById(id);
-            return true;
-        }catch (Exception e){
-            return false;
-        }
-    }
+    teamRepository.deleteById(id);
+  }
 }
-
