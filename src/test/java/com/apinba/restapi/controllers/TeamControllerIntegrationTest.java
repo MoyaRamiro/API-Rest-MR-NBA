@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import com.apinba.restapi.AbstractIntegrationTest;
+import com.apinba.restapi.controllers.model.CreateTeamRequest;
 import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.repositories.ITeamRepository;
 import io.restassured.response.Response;
@@ -48,20 +49,21 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void returnOkWhenCreate() {
-      create(aValidTeam()).then().statusCode(SC_OK);
+      create(aCreateTeamRequest()).then().statusCode(SC_OK);
     }
 
     @Test
     void saveTeamInDatabaseWhenCreate() {
-      create(aValidTeam()).then().statusCode(SC_OK);
+      create(aCreateTeamRequest()).then().statusCode(SC_OK);
       assertThat(teamRepository.findAll()).hasSize(1);
     }
 
     @Test
     void saveTeamNameWhenCreate() {
-      var team = aValidTeam();
-      team.setName("Bulls");
+      var team = aCreateTeamRequest().setName("Bulls");
+
       create(team);
+
       assertThat(teamRepository.findAll())
           .singleElement()
           .extracting(TeamModel::getName)
@@ -70,9 +72,10 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void saveTeamCityWhenCreate() {
-      var team = aValidTeam();
-      team.setCity("Chicago");
+      var team = aCreateTeamRequest().setCity("Chicago");
+
       create(team);
+
       assertThat(teamRepository.findAll())
           .singleElement()
           .extracting(TeamModel::getCity)
@@ -81,9 +84,10 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void saveTeamAbbreviationWhenCreate() {
-      var team = aValidTeam();
-      team.setAbbreviation("CHI");
+      var team = aCreateTeamRequest().setAbbreviation("CHI");
+
       create(team);
+
       assertThat(teamRepository.findAll())
           .singleElement()
           .extracting(TeamModel::getAbbreviation)
@@ -92,8 +96,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void saveTeamDivisionWhenCreate() {
-      var team = aValidTeam();
-      team.setDivision("Central");
+      var team = aCreateTeamRequest().setDivision("Central");
 
       create(team);
 
@@ -105,9 +108,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void saveTeamConferenceWhenCreate() {
-      var team = aValidTeam();
-
-      team.setConference("East");
+      var team = aCreateTeamRequest().setConference("East");
 
       create(team);
 
@@ -119,8 +120,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void saveTeamFullNameWhenCreate() {
-      var team = aValidTeam();
-      team.setFull_name("Chicago Bulls");
+      var team = aCreateTeamRequest().setFullName("Chicago Bulls");
 
       create(team);
 
@@ -138,7 +138,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @BeforeEach
     void setUp() {
-      persistedTeam = create(aValidTeam()).thenReturn().body().as(TeamModel.class);
+      persistedTeam = create(aCreateTeamRequest()).thenReturn().body().as(TeamModel.class);
     }
 
     @Test
@@ -340,8 +340,8 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
     }
   }
 
-  private static Response create(TeamModel team) {
-    return given().contentType(JSON).body(team).when().post("/teams");
+  private static Response create(CreateTeamRequest body) {
+    return given().contentType(JSON).body(body).when().post("/teams");
   }
 
   private static Response findById(UUID id) {
@@ -369,5 +369,11 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
     team.setFull_name("Boston Celtics");
     team.setName("Celtics");
     return team;
+  }
+
+  private static CreateTeamRequest aCreateTeamRequest() {
+    return new CreateTeamRequest(
+            "Celtics", "Boston Celtics", "BOS", "Boston", "East", "Atlantic"
+    );
   }
 }

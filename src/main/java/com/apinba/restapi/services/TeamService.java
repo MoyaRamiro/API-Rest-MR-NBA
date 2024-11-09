@@ -1,5 +1,6 @@
 package com.apinba.restapi.services;
 
+import com.apinba.restapi.models.CreateTeam;
 import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.repositories.ITeamRepository;
 import java.util.List;
@@ -21,7 +22,14 @@ public class TeamService {
     return teamRepository.findAll();
   }
 
-  public TeamModel saveTeam(TeamModel team) {
+  public TeamModel createTeam(CreateTeam createTeam) {
+    var team = new TeamModel();
+    team.setName(createTeam.name());
+    team.setCity(createTeam.city());
+    team.setAbbreviation(createTeam.abbreviation());
+    team.setConference(createTeam.conference());
+    team.setDivision(createTeam.division());
+    team.setFull_name(createTeam.fullName());
     return teamRepository.save(team);
   }
 
