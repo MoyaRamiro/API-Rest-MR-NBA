@@ -11,7 +11,7 @@ public class TeamNotFoundException extends RuntimeException {
     this.teamId = teamId;
   }
 
-    public UUID getTeamId() {
-        return teamId;
-    }
+  public UUID getTeamId() {
+    return teamId;
+  }
 }

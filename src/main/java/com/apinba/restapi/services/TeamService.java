@@ -46,12 +46,11 @@ public class TeamService {
     return team;
   }
 
-  public Boolean deleteTeamById(UUID id) {
+  public void deleteTeamById(UUID id) {
     if (!teamRepository.existsById(id)) {
-      return false;
+      throw new TeamNotFoundException(id);
     }
 
     teamRepository.deleteById(id);
-    return true;
   }
 }

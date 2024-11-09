@@ -9,7 +9,6 @@ import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.services.TeamService;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,13 +55,7 @@ public class TeamController {
 
   @DeleteMapping(path = "/{id}")
   public ResponseEntity<String> deleteTeamById(@PathVariable UUID id) {
-    boolean ok = this.teamService.deleteTeamById(id);
-
-    if (ok) {
-      return ResponseEntity.ok("Team with id " + id + "DELETED!");
-    } else {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND)
-          .body("Team with id " + id + "HAVEN'T DELETED PA NO SE DELETIO!");
-    }
+    teamService.deleteTeamById(id);
+    return ResponseEntity.ok("Team with id " + id + "DELETED!");
   }
 }
