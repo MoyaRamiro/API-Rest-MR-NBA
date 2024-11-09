@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.is;
 import com.apinba.restapi.AbstractIntegrationTest;
 import com.apinba.restapi.controllers.model.CreateTeamRequest;
 import com.apinba.restapi.controllers.model.CreateTeamResponse;
+import com.apinba.restapi.controllers.model.UpdateTeamRequest;
 import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.repositories.ITeamRepository;
 import io.restassured.response.Response;
@@ -40,6 +41,12 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
     void returnNotFoundWhenFindById() {
       var id = UUID.fromString("00000000-0000-0000-0000-000000000000");
       findById(id).then().statusCode(SC_NOT_FOUND);
+    }
+
+    @Test
+    void returnNotFoundWhenUpdate() {
+      var id = UUID.fromString("00000000-0000-0000-0000-000000000000");
+      update(anUpdateTeamRequest(), id).then().statusCode(SC_NOT_FOUND);
     }
 
     @Test
@@ -204,9 +211,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void returnsTeamAbbreviationWhenFindById() {
-      findById(persistedTeam.id())
-          .then()
-          .body("abbreviation", is(persistedTeam.abbreviation()));
+      findById(persistedTeam.id()).then().body("abbreviation", is(persistedTeam.abbreviation()));
     }
 
     @Test
@@ -221,53 +226,47 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void returnOkWhenUpdate() {
-      update(aValidTeam(), persistedTeam.id()).then().statusCode(SC_OK);
+      update(anUpdateTeamRequest(), persistedTeam.id()).then().statusCode(SC_OK);
     }
 
     @Test
     void returnTeamNameOnUpdate() {
-      var team = aValidTeam();
-      team.setName("Bulls");
+      var team = anUpdateTeamRequest().setName("Bulls");
 
-      update(team, persistedTeam.id()).then().body("name", is(team.getName()));
+      update(team, persistedTeam.id()).then().body("name", is("Bulls"));
     }
 
     @Test
     void returnTeamFullNameOnUpdate() {
-      var team = aValidTeam();
-      team.setFull_name("Chicago Bulls");
+      var team = anUpdateTeamRequest().setFullName("Chicago Bulls");
 
-      update(team, persistedTeam.id()).then().body("full_name", is(team.getFull_name()));
+      update(team, persistedTeam.id()).then().body("full_name", is("Chicago Bulls"));
     }
 
     @Test
     void returnTeamAbbreviationOnUpdate() {
-      var team = aValidTeam();
-      team.setAbbreviation("CHI");
+      var team = anUpdateTeamRequest().setAbbreviation("CHI");
 
-      update(team, persistedTeam.id()).then().body("abbreviation", is(team.getAbbreviation()));
+      update(team, persistedTeam.id()).then().body("abbreviation", is("CHI"));
     }
 
     @Test
     void returnTeamConferenceOnUpdate() {
-      var team = aValidTeam();
-      team.setConference("West");
+      var team = anUpdateTeamRequest().setConference("West");
 
-      update(team, persistedTeam.id()).then().body("conference", is(team.getConference()));
+      update(team, persistedTeam.id()).then().body("conference", is("West"));
     }
 
     @Test
     void returnTeamDivisionOnUpdate() {
-      var team = aValidTeam();
-      team.setDivision("Central");
+      var team = anUpdateTeamRequest().setDivision("Central");
 
-      update(team, persistedTeam.id()).then().body("division", is(team.getDivision()));
+      update(team, persistedTeam.id()).then().body("division", is("Central"));
     }
 
     @Test
     void updatesTeamNameOnDatabase() {
-      var team = aValidTeam();
-      team.setName("Bulls");
+      var team = anUpdateTeamRequest().setName("Bulls");
 
       update(team, persistedTeam.id());
 
@@ -279,8 +278,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void updatesTeamFullNameOnDatabase() {
-      var team = aValidTeam();
-      team.setFull_name("Chicago Bulls");
+      var team = anUpdateTeamRequest().setFullName("Chicago Bulls");
 
       update(team, persistedTeam.id());
 
@@ -292,8 +290,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void updatesTeamAbbreviationOnDatabase() {
-      var team = aValidTeam();
-      team.setAbbreviation("CHI");
+      var team = anUpdateTeamRequest().setAbbreviation("CHI");
 
       update(team, persistedTeam.id());
       assertThat(teamRepository.findById(persistedTeam.id()))
@@ -304,8 +301,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void updatesTeamConferenceOnDatabase() {
-      var team = aValidTeam();
-      team.setConference("West");
+      var team = anUpdateTeamRequest().setConference("West");
 
       update(team, persistedTeam.id());
 
@@ -317,8 +313,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void updatesTeamDivisionOnDatabase() {
-      var team = aValidTeam();
-      team.setDivision("Central");
+      var team = anUpdateTeamRequest().setDivision("Central");
 
       update(team, persistedTeam.id());
 
@@ -353,28 +348,19 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
     return given().get("/teams");
   }
 
-  private Response update(TeamModel team, UUID id) {
-    return given().contentType(JSON).body(team).put("/teams/{id}", id);
+  private Response update(UpdateTeamRequest body, UUID id) {
+    return given().contentType(JSON).body(body).put("/teams/{id}", id);
   }
 
   private static Response delete(UUID id) {
     return given().delete("/teams/{id}", id);
   }
 
-  private static TeamModel aValidTeam() {
-    var team = new TeamModel();
-    team.setAbbreviation("BOS");
-    team.setCity("Boston");
-    team.setConference("East");
-    team.setDivision("Atlantic");
-    team.setFull_name("Boston Celtics");
-    team.setName("Celtics");
-    return team;
+  private static CreateTeamRequest aCreateTeamRequest() {
+    return new CreateTeamRequest("Celtics", "Boston Celtics", "BOS", "Boston", "East", "Atlantic");
   }
 
-  private static CreateTeamRequest aCreateTeamRequest() {
-    return new CreateTeamRequest(
-            "Celtics", "Boston Celtics", "BOS", "Boston", "East", "Atlantic"
-    );
+  private static UpdateTeamRequest anUpdateTeamRequest() {
+    return new UpdateTeamRequest("Celtics", "Boston Celtics", "BOS", "Boston", "East", "Atlantic");
   }
 }

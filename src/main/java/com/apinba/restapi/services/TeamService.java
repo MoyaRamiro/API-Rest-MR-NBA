@@ -1,5 +1,6 @@
 package com.apinba.restapi.services;
 
+import com.apinba.restapi.exceptions.TeamNotFoundException;
 import com.apinba.restapi.models.CreateTeam;
 import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.models.UpdateTeam;
@@ -39,7 +40,7 @@ public class TeamService {
   }
 
   public TeamModel updateById(UpdateTeam updateTeam, @RequestParam UUID id) {
-    TeamModel team = teamRepository.findById(id).orElseThrow();
+    TeamModel team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException(id));
     team.updateWith(updateTeam);
     teamRepository.save(team);
     return team;
