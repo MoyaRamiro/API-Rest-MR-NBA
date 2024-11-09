@@ -2,7 +2,7 @@ package com.apinba.restapi.services;
 
 import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.repositories.ITeamRepository;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,8 @@ public class TeamService {
     this.teamRepository = teamRepository;
   }
 
-  public ArrayList<TeamModel> getTeams() {
-    return (ArrayList<TeamModel>) teamRepository.findAll();
+  public List<TeamModel> getTeams() {
+    return teamRepository.findAll();
   }
 
   public TeamModel saveTeam(TeamModel team) {

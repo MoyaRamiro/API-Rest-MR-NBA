@@ -2,7 +2,7 @@ package com.apinba.restapi.controllers;
 
 import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.services.TeamService;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class TeamController {
   }
 
   @GetMapping
-  public ArrayList<TeamModel> getTeams() {
+  public List<TeamModel> getTeams() {
     return this.teamService.getTeams();
   }
 
