@@ -1,13 +1,10 @@
 package com.apinba.restapi.repositories;
 
-import com.apinba.restapi.models.TeamModel;
+import java.util.UUID;
+
+import com.apinba.restapi.repositories.model.TeamEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
 @Repository
-public interface ITeamRepository extends JpaRepository<TeamModel, UUID> {
-
-
-}
+public interface JpaTeamRepository extends JpaRepository<TeamEntity, UUID> {}
