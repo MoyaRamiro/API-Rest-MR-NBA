@@ -134,7 +134,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
       assertThat(teamRepository.findAll())
           .singleElement()
-          .extracting(TeamModel::getFull_name)
+          .extracting(TeamModel::getFullName)
           .isEqualTo("Chicago Bulls");
     }
   }
@@ -284,7 +284,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
       assertThat(teamRepository.findById(persistedTeam.id()))
           .get()
-          .extracting(TeamModel::getFull_name)
+          .extracting(TeamModel::getFullName)
           .isEqualTo("Chicago Bulls");
     }
 

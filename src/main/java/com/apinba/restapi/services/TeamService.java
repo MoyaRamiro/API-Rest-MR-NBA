@@ -31,7 +31,7 @@ public class TeamService {
     team.setAbbreviation(createTeam.abbreviation());
     team.setConference(createTeam.conference());
     team.setDivision(createTeam.division());
-    team.setFull_name(createTeam.fullName());
+    team.setFullName(createTeam.fullName());
     return teamRepository.save(team);
   }
 

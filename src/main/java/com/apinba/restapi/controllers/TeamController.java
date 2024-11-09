@@ -2,6 +2,7 @@ package com.apinba.restapi.controllers;
 
 import com.apinba.restapi.controllers.model.CreateTeamRequest;
 import com.apinba.restapi.controllers.model.CreateTeamResponse;
+import com.apinba.restapi.controllers.model.FindAllTeamResponse;
 import com.apinba.restapi.controllers.model.FindTeamByIdResponse;
 import com.apinba.restapi.controllers.model.UpdateTeamRequest;
 import com.apinba.restapi.controllers.model.UpdateTeamResponse;
@@ -30,8 +31,13 @@ public class TeamController {
   }
 
   @GetMapping
-  public List<TeamModel> getTeams() {
-    return this.teamService.getTeams();
+  public ResponseEntity<List<FindAllTeamResponse>> getTeams() {
+    var teams = this.teamService.getTeams()
+            .stream()
+            .map(FindAllTeamResponse::fromTeamModel)
+            .toList();
+
+    return ResponseEntity.ok(teams);
   }
 
   @PostMapping

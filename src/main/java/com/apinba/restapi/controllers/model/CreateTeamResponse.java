@@ -19,7 +19,7 @@ public record CreateTeamResponse(
     return new CreateTeamResponse(
         teamModel.getId(),
         teamModel.getName(),
-        teamModel.getFull_name(),
+        teamModel.getFullName(),
         teamModel.getAbbreviation(),
         teamModel.getCity(),
         teamModel.getConference(),

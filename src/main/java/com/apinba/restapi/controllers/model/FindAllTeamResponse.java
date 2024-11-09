@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.util.UUID;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record UpdateTeamResponse(
+public record FindAllTeamResponse(
     UUID id,
     String name,
     String fullName,
@@ -15,8 +15,8 @@ public record UpdateTeamResponse(
     String conference,
     String division) {
 
-  public static UpdateTeamResponse fromTeamModel(TeamModel teamModel) {
-    return new UpdateTeamResponse(
+  public static FindAllTeamResponse fromTeamModel(TeamModel teamModel) {
+    return new FindAllTeamResponse(
         teamModel.getId(),
         teamModel.getName(),
         teamModel.getFullName(),

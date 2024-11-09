@@ -15,7 +15,7 @@ public class TeamModel {
   @Column private String city;
   @Column private String conference;
   @Column private String division;
-  @Column private String full_name;
+  @Column private String fullName;
   @Column private String name;
 
   public String getAbbreviation() {
@@ -50,12 +50,12 @@ public class TeamModel {
     this.division = division;
   }
 
-  public String getFull_name() {
-    return full_name;
+  public String getFullName() {
+    return fullName;
   }
 
-  public void setFull_name(String full_name) {
-    this.full_name = full_name;
+  public void setFullName(String full_name) {
+    this.fullName = full_name;
   }
 
   public String getName() {
@@ -72,7 +72,7 @@ public class TeamModel {
     abbreviation = updateTeam.abbreviation();
     conference = updateTeam.conference();
     division = updateTeam.division();
-    full_name = updateTeam.fullName();
+    fullName = updateTeam.fullName();
   }
 
   public UUID getId() {

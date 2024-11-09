@@ -20,7 +20,7 @@ public record FindTeamByIdResponse(
     return new FindTeamByIdResponse(
         teamModel.getId(),
         teamModel.getName(),
-        teamModel.getFull_name(),
+        teamModel.getFullName(),
         teamModel.getAbbreviation(),
         teamModel.getCity(),
         teamModel.getConference(),
