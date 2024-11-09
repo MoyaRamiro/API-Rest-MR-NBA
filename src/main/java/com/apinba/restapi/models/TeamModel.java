@@ -10,7 +10,6 @@ public class TeamModel {
     @Id
     @Column
     private UUID id = UUID.randomUUID();
-
     @Column
     private String abbreviation;
     @Column

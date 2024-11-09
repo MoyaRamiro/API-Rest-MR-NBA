@@ -38,6 +38,8 @@ public class TeamService {
         teamModel.setDivision(team.getDivision());
         teamModel.setFull_name(team.getFull_name());
 
+        teamRepository.save(teamModel);
+
         return teamModel;
     }
 
