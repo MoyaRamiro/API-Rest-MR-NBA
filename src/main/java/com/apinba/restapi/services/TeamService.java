@@ -8,6 +8,7 @@ import com.apinba.restapi.models.UpdateTeam;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import com.apinba.restapi.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class TeamService {
     this.teamRepository = teamRepository;
   }
 
-  public List<Team> getTeams() {
+  public Stream<Team> getTeams() {
     return teamRepository.findAll();
   }
 

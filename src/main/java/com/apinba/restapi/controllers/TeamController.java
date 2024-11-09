@@ -32,7 +32,6 @@ public class TeamController {
   @GetMapping
   public ResponseEntity<List<FindAllTeamResponse>> getTeams() {
     var teams = this.teamService.getTeams()
-            .stream()
             .map(FindAllTeamResponse::fromTeamModel)
             .toList();
 

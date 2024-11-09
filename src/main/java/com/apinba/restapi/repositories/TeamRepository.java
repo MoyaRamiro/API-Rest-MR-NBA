@@ -1,9 +1,10 @@
 package com.apinba.restapi.repositories;
 
 import com.apinba.restapi.models.Team;
-import java.util.List;
+
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import com.apinba.restapi.repositories.model.TeamEntity;
 import org.springframework.stereotype.Repository;
@@ -26,8 +27,8 @@ public class TeamRepository {
     return jpaRepository.findById(id).map(TeamEntity::toTeam);
   }
 
-  public List<Team> findAll() {
-    return jpaRepository.findAll().stream().map(TeamEntity::toTeam).toList();
+  public Stream<Team> findAll() {
+    return jpaRepository.findAll().stream().map(TeamEntity::toTeam);
   }
 
   public boolean existsById(UUID id) {
