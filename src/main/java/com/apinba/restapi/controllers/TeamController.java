@@ -2,6 +2,7 @@ package com.apinba.restapi.controllers;
 
 import com.apinba.restapi.controllers.model.CreateTeamRequest;
 import com.apinba.restapi.controllers.model.CreateTeamResponse;
+import com.apinba.restapi.controllers.model.FindByIdResponse;
 import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.services.TeamService;
 import java.util.List;
@@ -39,8 +40,9 @@ public class TeamController {
   }
 
   @GetMapping(path = "/{id}")
-  public ResponseEntity<TeamModel> getTeamById(@PathVariable UUID id) {
-    return ResponseEntity.of(teamService.getById(id));
+  public ResponseEntity<FindByIdResponse> findById(@PathVariable UUID id) {
+    var response = teamService.getById(id).map(FindByIdResponse::fromTeamModel);
+    return ResponseEntity.of(response);
   }
 
   @PutMapping(path = "/{id}")
