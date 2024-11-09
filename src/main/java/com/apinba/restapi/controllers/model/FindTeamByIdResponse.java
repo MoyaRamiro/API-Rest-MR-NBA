@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.util.UUID;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record FindByIdResponse(
+public record FindTeamByIdResponse(
     UUID id,
     String name,
     String fullName,
@@ -16,8 +16,8 @@ public record FindByIdResponse(
     String conference,
     String division) {
 
-  public static FindByIdResponse fromTeamModel(TeamModel teamModel) {
-    return new FindByIdResponse(
+  public static FindTeamByIdResponse fromTeamModel(TeamModel teamModel) {
+    return new FindTeamByIdResponse(
         teamModel.getId(),
         teamModel.getName(),
         teamModel.getFull_name(),

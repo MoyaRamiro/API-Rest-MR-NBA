@@ -2,7 +2,9 @@ package com.apinba.restapi.controllers;
 
 import com.apinba.restapi.controllers.model.CreateTeamRequest;
 import com.apinba.restapi.controllers.model.CreateTeamResponse;
-import com.apinba.restapi.controllers.model.FindByIdResponse;
+import com.apinba.restapi.controllers.model.FindTeamByIdResponse;
+import com.apinba.restapi.controllers.model.UpdateTeamRequest;
+import com.apinba.restapi.controllers.model.UpdateTeamResponse;
 import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.services.TeamService;
 import java.util.List;
@@ -40,14 +42,16 @@ public class TeamController {
   }
 
   @GetMapping(path = "/{id}")
-  public ResponseEntity<FindByIdResponse> findById(@PathVariable UUID id) {
-    var response = teamService.getById(id).map(FindByIdResponse::fromTeamModel);
+  public ResponseEntity<FindTeamByIdResponse> findById(@PathVariable UUID id) {
+    var response = teamService.getById(id).map(FindTeamByIdResponse::fromTeamModel);
     return ResponseEntity.of(response);
   }
 
   @PutMapping(path = "/{id}")
-  public TeamModel updateTeamById(@RequestBody TeamModel request, @PathVariable UUID id) {
-    return this.teamService.updateById(request, id);
+  public ResponseEntity<UpdateTeamResponse> updateTeamById(
+      @RequestBody UpdateTeamRequest request, @PathVariable UUID id) {
+    var updatedTeam = teamService.updateById(request.toUpdateTeam(), id);
+    return ResponseEntity.ok(UpdateTeamResponse.fromTeamModel(updatedTeam));
   }
 
   @DeleteMapping(path = "/{id}")

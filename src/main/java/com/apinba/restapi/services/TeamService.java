@@ -2,6 +2,7 @@ package com.apinba.restapi.services;
 
 import com.apinba.restapi.models.CreateTeam;
 import com.apinba.restapi.models.TeamModel;
+import com.apinba.restapi.models.UpdateTeam;
 import com.apinba.restapi.repositories.ITeamRepository;
 import java.util.List;
 import java.util.Optional;
@@ -37,19 +38,11 @@ public class TeamService {
     return teamRepository.findById(id);
   }
 
-  public TeamModel updateById(TeamModel team, @RequestParam UUID id) {
-    TeamModel teamModel = teamRepository.findById(id).get();
-
-    teamModel.setName(team.getName());
-    teamModel.setCity(team.getCity());
-    teamModel.setAbbreviation(team.getAbbreviation());
-    teamModel.setConference(team.getConference());
-    teamModel.setDivision(team.getDivision());
-    teamModel.setFull_name(team.getFull_name());
-
-    teamRepository.save(teamModel);
-
-    return teamModel;
+  public TeamModel updateById(UpdateTeam updateTeam, @RequestParam UUID id) {
+    TeamModel team = teamRepository.findById(id).orElseThrow();
+    team.updateWith(updateTeam);
+    teamRepository.save(team);
+    return team;
   }
 
   public Boolean deleteTeamById(UUID id) {

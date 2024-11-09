@@ -1,10 +1,9 @@
 package com.apinba.restapi.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.Table;
 import java.util.UUID;
 
 @Entity
@@ -65,6 +64,15 @@ public class TeamModel {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public void updateWith(UpdateTeam updateTeam) {
+    name = updateTeam.name();
+    city = updateTeam.city();
+    abbreviation = updateTeam.abbreviation();
+    conference = updateTeam.conference();
+    division = updateTeam.division();
+    full_name = updateTeam.fullName();
   }
 
   public UUID getId() {
