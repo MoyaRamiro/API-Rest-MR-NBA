@@ -11,8 +11,9 @@ import com.apinba.restapi.AbstractIntegrationTest;
 import com.apinba.restapi.controllers.model.CreateTeamRequest;
 import com.apinba.restapi.controllers.model.CreateTeamResponse;
 import com.apinba.restapi.controllers.model.UpdateTeamRequest;
-import com.apinba.restapi.models.TeamModel;
-import com.apinba.restapi.repositories.ITeamRepository;
+import com.apinba.restapi.models.Team;
+import com.apinba.restapi.repositories.JpaTeamRepository;
+import com.apinba.restapi.repositories.model.TeamEntity;
 import io.restassured.response.Response;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
-  @Autowired private ITeamRepository teamRepository;
+  @Autowired private JpaTeamRepository teamRepository;
 
   @Nested
   class GivenNoPersistedTeamsShould {
@@ -74,7 +75,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
       assertThat(teamRepository.findAll())
           .singleElement()
-          .extracting(TeamModel::getName)
+          .extracting(TeamEntity::getName)
           .isEqualTo("Bulls");
     }
 
@@ -86,7 +87,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
       assertThat(teamRepository.findAll())
           .singleElement()
-          .extracting(TeamModel::getCity)
+          .extracting(TeamEntity::getCity)
           .isEqualTo("Chicago");
     }
 
@@ -98,7 +99,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
       assertThat(teamRepository.findAll())
           .singleElement()
-          .extracting(TeamModel::getAbbreviation)
+          .extracting(TeamEntity::getAbbreviation)
           .isEqualTo("CHI");
     }
 
@@ -110,7 +111,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
       assertThat(teamRepository.findAll())
           .singleElement()
-          .extracting(TeamModel::getDivision)
+          .extracting(TeamEntity::getDivision)
           .isEqualTo("Central");
     }
 
@@ -122,7 +123,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
       assertThat(teamRepository.findAll())
           .singleElement()
-          .extracting(TeamModel::getConference)
+          .extracting(TeamEntity::getConference)
           .isEqualTo("East");
     }
 
@@ -134,7 +135,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
       assertThat(teamRepository.findAll())
           .singleElement()
-          .extracting(TeamModel::getFullName)
+          .extracting(TeamEntity::getFullName)
           .isEqualTo("Chicago Bulls");
     }
   }
@@ -272,7 +273,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
       assertThat(teamRepository.findById(persistedTeam.id()))
           .get()
-          .extracting(TeamModel::getName)
+          .extracting(TeamEntity::getName)
           .isEqualTo("Bulls");
     }
 
@@ -284,7 +285,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
       assertThat(teamRepository.findById(persistedTeam.id()))
           .get()
-          .extracting(TeamModel::getFullName)
+          .extracting(TeamEntity::getFullName)
           .isEqualTo("Chicago Bulls");
     }
 
@@ -295,7 +296,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
       update(team, persistedTeam.id());
       assertThat(teamRepository.findById(persistedTeam.id()))
           .get()
-          .extracting(TeamModel::getAbbreviation)
+          .extracting(TeamEntity::getAbbreviation)
           .isEqualTo("CHI");
     }
 
@@ -307,7 +308,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
       assertThat(teamRepository.findById(persistedTeam.id()))
           .get()
-          .extracting(TeamModel::getConference)
+          .extracting(TeamEntity::getConference)
           .isEqualTo("West");
     }
 
@@ -319,7 +320,7 @@ class TeamControllerIntegrationTest extends AbstractIntegrationTest {
 
       assertThat(teamRepository.findById(persistedTeam.id()))
           .get()
-          .extracting(TeamModel::getDivision)
+          .extracting(TeamEntity::getDivision)
           .isEqualTo("Central");
     }
 

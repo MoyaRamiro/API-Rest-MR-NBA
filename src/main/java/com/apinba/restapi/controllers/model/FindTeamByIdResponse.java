@@ -1,9 +1,8 @@
 package com.apinba.restapi.controllers.model;
 
-import com.apinba.restapi.models.TeamModel;
+import com.apinba.restapi.models.Team;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import java.util.UUID;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -16,14 +15,14 @@ public record FindTeamByIdResponse(
     String conference,
     String division) {
 
-  public static FindTeamByIdResponse fromTeamModel(TeamModel teamModel) {
+  public static FindTeamByIdResponse fromTeamModel(Team team) {
     return new FindTeamByIdResponse(
-        teamModel.getId(),
-        teamModel.getName(),
-        teamModel.getFullName(),
-        teamModel.getAbbreviation(),
-        teamModel.getCity(),
-        teamModel.getConference(),
-        teamModel.getDivision());
+        team.id(),
+        team.name(),
+        team.fullName(),
+        team.abbreviation(),
+        team.city(),
+        team.conference(),
+        team.division());
   }
 }

@@ -1,5 +1,6 @@
-package com.apinba.restapi.models;
+package com.apinba.restapi.repositories.model;
 
+import com.apinba.restapi.models.Team;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,15 +9,46 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "team")
-public class TeamModel {
-  @Id @Column private UUID id = UUID.randomUUID();
-
+public class TeamEntity {
+  @Id @Column private UUID id;
   @Column private String abbreviation;
   @Column private String city;
   @Column private String conference;
   @Column private String division;
   @Column private String fullName;
   @Column private String name;
+
+  public TeamEntity(
+      UUID id,
+      String name,
+      String fullName,
+      String abbreviation,
+      String city,
+      String conference,
+      String division) {
+    this.id = id;
+    this.name = name;
+    this.fullName = fullName;
+    this.abbreviation = abbreviation;
+    this.city = city;
+    this.conference = conference;
+    this.division = division;
+  }
+
+  public TeamEntity() {
+    // Required by JPA
+  }
+
+  public static TeamEntity fromTeam(Team team) {
+    return new TeamEntity(
+        team.id(),
+        team.name(),
+        team.fullName(),
+        team.abbreviation(),
+        team.city(),
+        team.conference(),
+        team.division());
+  }
 
   public String getAbbreviation() {
     return abbreviation;
@@ -66,16 +98,11 @@ public class TeamModel {
     this.name = name;
   }
 
-  public void updateWith(UpdateTeam updateTeam) {
-    name = updateTeam.name();
-    city = updateTeam.city();
-    abbreviation = updateTeam.abbreviation();
-    conference = updateTeam.conference();
-    division = updateTeam.division();
-    fullName = updateTeam.fullName();
-  }
-
   public UUID getId() {
     return id;
+  }
+
+  public Team toTeam() {
+    return new Team(id, abbreviation, city, conference, division, fullName, name);
   }
 }

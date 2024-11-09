@@ -1,6 +1,6 @@
 package com.apinba.restapi;
 
-import com.apinba.restapi.repositories.ITeamRepository;
+import com.apinba.restapi.repositories.JpaTeamRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
 public class AbstractIntegrationTest {
 
     @Autowired
-    private ITeamRepository teamRepository;
+    private JpaTeamRepository teamRepository;
 
     @LocalServerPort
     private Integer port;

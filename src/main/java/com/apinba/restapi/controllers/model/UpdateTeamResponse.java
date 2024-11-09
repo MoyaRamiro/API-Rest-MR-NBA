@@ -1,6 +1,6 @@
 package com.apinba.restapi.controllers.model;
 
-import com.apinba.restapi.models.TeamModel;
+import com.apinba.restapi.models.Team;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.util.UUID;
@@ -15,14 +15,14 @@ public record UpdateTeamResponse(
     String conference,
     String division) {
 
-  public static UpdateTeamResponse fromTeamModel(TeamModel teamModel) {
+  public static UpdateTeamResponse fromTeamModel(Team team) {
     return new UpdateTeamResponse(
-        teamModel.getId(),
-        teamModel.getName(),
-        teamModel.getFullName(),
-        teamModel.getAbbreviation(),
-        teamModel.getCity(),
-        teamModel.getConference(),
-        teamModel.getDivision());
+        team.id(),
+        team.name(),
+        team.fullName(),
+        team.abbreviation(),
+        team.city(),
+        team.conference(),
+        team.division());
   }
 }

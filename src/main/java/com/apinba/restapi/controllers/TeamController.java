@@ -6,7 +6,6 @@ import com.apinba.restapi.controllers.model.FindAllTeamResponse;
 import com.apinba.restapi.controllers.model.FindTeamByIdResponse;
 import com.apinba.restapi.controllers.model.UpdateTeamRequest;
 import com.apinba.restapi.controllers.model.UpdateTeamResponse;
-import com.apinba.restapi.models.TeamModel;
 import com.apinba.restapi.services.TeamService;
 import java.util.List;
 import java.util.UUID;
