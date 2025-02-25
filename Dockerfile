@@ -1,15 +1,16 @@
-# 1️⃣ Usar una imagen base de OpenJDK ligera
-FROM gradle:jdk17-noble
-
-# 2️⃣ Establecer el directorio de trabajo dentro del contenedor
+# 🏗️ Etapa de construcción
+FROM gradle:jdk17 AS build
 WORKDIR /app
-
-# 3️⃣ Copiar el JAR generado por Gradle al contenedor
-COPY ./ .
-
+COPY . .
 RUN gradle build -x test
-# 4️⃣ Exponer el puerto en el que corre tu aplicación (ajusta si es necesario)
+
+# 🏃‍♂️ Etapa de producción con una imagen más liviana
+FROM eclipse-temurin:17-jre-alpine AS runtime
+WORKDIR /app
+COPY --from=build /app/build/libs/restapi-0.0.1-SNAPSHOT.jar app.jar
+
+# Exponer el puerto necesario
 EXPOSE 8080
 
-# 5️⃣ Definir el comando de inicio de la aplicación
-ENTRYPOINT ["java", "-jar", "build/libs/restapi-0.0.1-SNAPSHOT.jar"]
+# Iniciar la aplicación
+ENTRYPOINT ["java", "-jar", "app.jar"]
