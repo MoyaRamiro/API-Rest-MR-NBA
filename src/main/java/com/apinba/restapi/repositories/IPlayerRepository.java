@@ -10,13 +10,15 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IPlayerRepository extends JpaRepository<PlayerModel, UUID> {
-    @Query("""
+  @Query(
+      """
             select p from PlayerModel p
             where upper(p.first_name) like upper(concat('%', :name, '%')) or upper(p.last_name) like upper(concat('%', :name, '%'))""")
-    Page<PlayerModel> searchByName(String name, Pageable pageable);
+  Page<PlayerModel> searchByName(String name, Pageable pageable);
 
-    @Query("""
+  @Query(
+      """
             select p from PlayerModel p
             where p.team.id = :teamId""")
-    Page<PlayerModel> findByTeamId(UUID teamId, Pageable pageable);
+  Page<PlayerModel> findByTeamId(UUID teamId, Pageable pageable);
 }

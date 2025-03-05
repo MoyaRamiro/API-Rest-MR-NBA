@@ -19,7 +19,6 @@ public class TeamController {
     this.teamService = teamService;
   }
 
-
   @GetMapping
   public List<TeamDto> getTeams() {
     return this.teamService.getTeams().stream().map(TeamDto::from).toList();
@@ -32,15 +31,16 @@ public class TeamController {
   }
 
   @PostMapping("/batch")
-  public List<TeamDto> savePlayersList(@RequestBody List<TeamModel> teams){
+  public List<TeamDto> savePlayersList(@RequestBody List<TeamModel> teams) {
     return teamService.savePlayersList(teams).stream().map(TeamDto::from).toList();
   }
 
   @GetMapping(path = "/{id}")
   public ResponseEntity<TeamDto> getTeamById(@PathVariable UUID id) {
-    return teamService.getById(id)
-            .map(team -> ResponseEntity.ok(TeamDto.from(team)))
-            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    return teamService
+        .getById(id)
+        .map(team -> ResponseEntity.ok(TeamDto.from(team)))
+        .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
   }
 
   @PutMapping(path = "/{id}")

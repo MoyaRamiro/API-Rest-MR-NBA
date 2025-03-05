@@ -24,7 +24,9 @@ public class TeamService {
     return teamRepository.save(team);
   }
 
-  public List<TeamModel> savePlayersList(List<TeamModel> teams) { return teamRepository.saveAll(teams); }
+  public List<TeamModel> savePlayersList(List<TeamModel> teams) {
+    return teamRepository.saveAll(teams);
+  }
 
   public Optional<TeamModel> getById(UUID id) {
     return teamRepository.findById(id);
